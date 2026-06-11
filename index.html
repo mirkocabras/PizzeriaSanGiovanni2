@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>San Giovanni 2 | Ristorante Pizzeria Milano | Eccellenza Gastronomica</title>
+    
+    <!-- Importazione Font Premium da Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. CONFIGURAZIONE DELLE VARIABILI E DESIGN SYSTEM
+           ========================================================================== */
+        :root {
+            --bg-deep: #02040a;         
+            --bg-card: rgba(13, 20, 38, 0.45);      
+            --brand-primary: #3b82f6; 
+            --brand-glow: rgba(59, 130, 246, 0.3);     
+            --accent-gold: #fbbf24;     
+            --text-pure: #ffffff;      
+            --text-muted: #94a3b8;        
+            --border-glow: rgba(255, 255, 255, 0.05);
+            --radius-premium: 24px;
+            --radius-pill: 50px;
+            --ease-3d: cubic-bezier(0.2, 1, 0.3, 1);
+
+            /* Tipografia Fluida Reattiva */
+            --font-size-hero: clamp(48px, 7vw, 100px);
+            --font-size-section: clamp(36px, 5vw, 68px);
+            --font-size-card-title: clamp(20px, 2vw, 24px);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(circle at 5% 15%, #0b1532 0%, transparent 45%),
+                radial-gradient(circle at 95% 85%, #080d20 0%, transparent 55%);
+            color: var(--text-pure);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            perspective: 1400px;
+        }
+
+        /* Effetti Aurora per lo Sfondo */
+        .ambient-aurora {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(180px);
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.18;
+            mix-blend-mode: plus-lighter;
+        }
+        .aurora-1 { top: 5%; left: -10%; width: 600px; height: 600px; background: var(--brand-primary); }
+        .aurora-2 { top: 50%; right: -10%; width: 700px; height: 700px; background: #6366f1; }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 30px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .section-space {
+            padding: 140px 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: var(--font-size-section);
+            line-height: 1.05;
+            margin-bottom: 20px;
+            background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title span {
+            color: var(--accent-gold);
+            -webkit-text-fill-color: initial;
+            font-style: italic;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 80px auto;
+            font-size: 16px;
+        }
+
+        /* Scritta di Sfondo Decorativa */
+        .bg-text-stroke {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(100px, 15vw, 220px);
+            font-weight: 900;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.03);
+            pointer-events: none;
+            z-index: 1;
+            user-select: none;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+
+        /* Animazioni di Comparsa allo Scroll */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s var(--ease-3d), transform 1.2s var(--ease-3d);
+        }
+        .reveal-element.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==========================================================================
+           2. HEADER & NAVIGATION (GLASSMORPHISM)
+           ========================================================================== */
+        header {
+            background-color: rgba(2, 4, 10, 0.7);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--border-glow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            font-family: 'Playfair Display', serif;
+        }
+        .logo span { color: var(--brand-primary); }
+
+        .menu-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            margin-left: 40px;
+            transition: color 0.3s;
+            position: relative;
+        }
+        .menu-links a:hover { color: #ffffff; }
+        .menu-links a::after {
+            content: ''; position: absolute; bottom: -8px; left: 0;
+            width: 0; height: 2px; background-color: var(--brand-primary);
+            transition: width 0.3s var(--ease-3d);
+        }
+        .menu-links a:hover::after { width: 100%; }
+
+        .menu-toggle { display: none; flex-direction: column; cursor: pointer; gap: 7px; }
+        .menu-toggle span { display: block; width: 30px; height: 2px; background-color: #ffffff; }
+
+        @media (max-width: 991px) {
+            .menu-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background-color: #030611; flex-direction: column;
+                justify-content: center; align-items: center; gap: 45px; transition: 0.7s var(--ease-3d);
+            }
+            .menu-links.active { right: 0; }
+            .menu-links a { margin: 0; font-size: 20px; }
+            .menu-toggle { display: flex; }
+        }
+
+        /* ==========================================================================
+           3. HERO BANNER CINEMATICO
+           ========================================================================== */
+        .hero-banner {
+            background: linear-gradient(rgba(2, 4, 10, 0.2) 0%, rgba(2, 4, 10, 0.98) 100%), 
+                        url('https://i.ibb.co/YTQxZc2c/image.png') no-repeat center center/cover;
+            padding: 280px 0 200px 0;
+            text-align: center;
+        }
+
+        .hero-banner h1 {
+            font-size: var(--font-size-hero);
+            line-height: 0.95;
+            margin-bottom: 35px;
+            letter-spacing: -3px;
+            background: linear-gradient(to bottom, #ffffff 40%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-banner p {
+            font-size: clamp(18px, 2.5vw, 24px);
+            color: #cbd5e1;
+            max-width: 800px;
+            margin: 0 auto 60px auto;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 22px 48px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            border-radius: var(--radius-pill);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.35);
+            transition: all 0.4s var(--ease-3d);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            cursor: pointer;
+        }
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(37, 99, 235, 0.55);
+        }
+
+        .cta-secondary {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-glow);
+            box-shadow: none;
+        }
+        .cta-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 35px rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ==========================================================================
+           4. VETRINA PROSPETTICA E SEZIONI CONTENUTI
+           ========================================================================== */
+        .showcase-flex { display: flex; align-items: center; gap: 100px; }
+        .showcase-text { flex: 1.2; }
+        .showcase-text h2 { font-size: calc(var(--font-size-section) - 8px); margin-bottom: 30px; line-height: 1.1; }
+        .showcase-text h2 span { color: var(--accent-gold); font-style: italic; }
+        .showcase-text p { color: #cbd5e1; font-size: 18px; line-height: 1.9; font-weight: 300; }
+
+        .pizza-art-wrapper { flex: 0.8; perspective: 1200px; }
+        .pizza-art-frame {
+            width: 100%; max-width: 460px; aspect-ratio: 1 / 1;
+            position: relative; overflow: hidden; border-radius: var(--radius-premium); 
+            border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
+            transform-style: preserve-3d; transition: transform 0.2s var(--ease-3d);
+        }
+        .pizza-art-img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.03); }
+
+        @media (max-width: 900px) {
+            .showcase-flex { flex-direction: column-reverse; text-align: center; gap: 60px; }
+            .pizza-art-frame { max-width: 360px; margin: 0 auto; }
+        }
+
+        /* ==========================================================================
+           5. SEZIONE MENU GASTRONOMICO INTERATTIVO
+           ========================================================================== */
+        .menu-tabs-nav { display: flex; justify-content: center; gap: 20px; margin-bottom: 80px; flex-wrap: wrap; }
+        .menu-tab-btn {
+            background-color: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-glow);
+            padding: 18px 36px; color: var(--text-muted); border-radius: var(--radius-pill);
+            font-size: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase;
+            letter-spacing: 2px; transition: all 0.4s var(--ease-3d);
+        }
+        .menu-tab-btn:hover, .menu-tab-btn.tab-active {
+            background-color: #ffffff; color: #02040a; border-color: #ffffff;
+            box-shadow: 0 15px 35px rgba(255, 255, 255, 0.15);
+        }
+
+        .menu-pane { display: none; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 40px; }
+        .menu-pane.pane-active { display: grid; }
+        .card-perspective-wrapper { perspective: 1000px; }
+
+        .food-card {
+            background: linear-gradient(135deg, rgba(18, 26, 48, 0.6) 0%, rgba(10, 14, 26, 0.7) 100%);
+            padding: 40px 35px; border-radius: var(--radius-premium); border: 1px solid var(--border-glow);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: relative;
+            transform-style: preserve-3d; transition: transform 0.15s var(--ease-3d), border-color 0.4s, box-shadow 0.4s;
+            cursor: pointer;
+        }
+        .food-card:hover {
+            border-color: rgba(59, 130, 246, 0.45);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.65), 0 0 40px var(--brand-glow);
+        }
+
+        .food-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; transform: translateZ(50px); }
+        .food-name { font-family: 'Playfair Display', serif; font-size: var(--font-size-card-title); font-weight: 700; color: #ffffff; }
+        .food-price { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--accent-gold); }
+        .food-details { font-size: 14px; color: var(--text-muted); line-height: 1.75; font-weight: 300; transform: translateZ(30px); }
+
+        /* ==========================================================================
+           6. CONSEGNA A DOMICILIO & RECENSIONI
+           ========================================================================== */
+        .delivery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 40px; max-width: 850px; margin: 0 auto; }
+        .delivery-card {
+            background-color: rgba(12, 18, 34, 0.5); border: 1px solid var(--border-glow); padding: 55px 40px;
+            border-radius: var(--radius-premium); display: flex; flex-direction: column; align-items: center;
+            transform-style: preserve-3d; transition: transform 0.2s var(--ease-3d), border-color 0.4s; backdrop-filter: blur(15px);
+        }
+        .platform-name { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 900; margin-bottom: 15px; transform: translateZ(40px); }
+        .deliveroo-theme { color: #00cdbc; text-shadow: 0 12px 30px rgba(0, 205, 188, 0.25); }
+        .justeat-theme { color: #f31a22; text-shadow: 0 12px 30px rgba(243, 26, 34, 0.25); }
+        
+        .delivery-badge {
+            background-color: rgba(251, 191, 36, 0.05); padding: 6px 20px; border-radius: var(--radius-pill);
+            font-size: 11px; font-weight: 700; color: var(--accent-gold); margin-bottom: 35px;
+            border: 1px solid rgba(251, 191, 36, 0.18); text-transform: uppercase; transform: translateZ(20px);
+        }
+        .delivery-time { font-size: 15px; color: #e2e8f0; margin-bottom: 45px; flex-grow: 1; font-weight: 300; transform: translateZ(25px); }
+        .delivery-time strong { color: var(--accent-gold); }
+        
+        .delivery-btn {
+            display: inline-block; width: 100%; padding: 16px 24px; background-color: rgba(255, 255, 255, 0.02);
+            color: #ffffff; text-decoration: none; font-weight: 700; font-size: 12px; text-transform: uppercase;
+            letter-spacing: 1.5px; border-radius: 14px; transition: all 0.3s; border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center; transform: translateZ(35px);
+        }
+        .delivery-card:hover .delivery-btn { background-color: var(--brand-primary); border-color: var(--brand-primary); box-shadow: 0 12px 25px rgba(37, 99, 235, 0.45); }
+
+        .reviews-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; }
+        .review-card {
+            background-color: rgba(14, 21, 38, 0.35); padding: 45px 40px; border-radius: var(--radius-premium);
+            border: 1px solid var(--border-glow); display: flex; flex-direction: column; transform-style: preserve-3d; transition: transform 0.2s var(--ease-3d);
+        }
+        .stars-container { color: var(--accent-gold); font-size: 13px; margin-bottom: 25px; transform: translateZ(20px); }
+        .review-quote { font-size: 16px; color: #e2e8f0; font-style: italic; margin-bottom: 40px; line-height: 1.85; flex-grow: 1; font-weight: 300; transform: translateZ(35px); }
+        .review-author { font-weight: 700; font-size: 14px; padding-top: 25px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); transform: translateZ(25px); }
+        .author-source { font-size: 11px; color: var(--text-muted); background-color: rgba(255, 255, 255, 0.04); padding: 4px 12px; border-radius: 6px; }
+
+        /* ==========================================================================
+           7. SEZIONE CONTATTI AGGIORNATA (SEMPLICE TESTO EDITATO)
+           ========================================================================== */
+        .contacts-text-block {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .contacts-text-block h2 {
+            font-size: var(--font-size-section);
+            margin-bottom: 30px;
+            background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .contacts-text-block p {
+            font-size: 18px;
+            color: #cbd5e1;
+            line-height: 1.8;
+            margin-bottom: 12px;
+            font-weight: 400;
+        }
+        .contacts-text-block .highlight-gold {
+            color: var(--accent-gold);
+            font-weight: 700;
+            font-size: 22px;
+            display: block;
+            margin-bottom: 20px;
+        }
+        .contacts-description {
+            color: var(--text-muted) !important;
+            max-width: 620px;
+            margin: 35px auto 0 auto;
+            font-size: 15px !important;
+            font-weight: 300;
+        }
+
+        footer { background-color: #010205; border-top: 1px solid var(--border-glow); padding: 50px 0; text-align: center; font-size: 13px; color: var(--text-muted); }
+
+        /* Sistema di Notifica Fly-out */
+        #toast-container {
+            position: fixed; bottom: 40px; right: 40px; z-index: 3000;
+            display: flex; flex-direction: column; gap: 15px; pointer-events: none;
+        }
+        .toast {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            border: 1px solid rgba(59, 130, 246, 0.4); padding: 20px 30px;
+            border-radius: 16px; color: #ffffff; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 12px;
+            transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .toast.toast-show { transform: translateX(0); }
+        .toast-icon { color: var(--accent-gold); font-weight: bold; }
+
+        @media (max-width: 768px) {
+            .section-title { font-size: 44px; }
+            .hero-banner h1 { font-size: 54px; }
+            #toast-container { right: 20px; bottom: 20px; left: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-aurora aurora-1"></div>
+    <div class="ambient-aurora aurora-2"></div>
+
+    <!-- NAVBAR -->
+    <header>
+        <div class="container nav-flex">
+            <a href="#" class="logo"><span>Ristorante </span>San Giovanni <span>2</span></a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span><span></span><span></span>
+            </div>
+            <nav class="menu-links" id="nav-links">
+                <a href="#specialita">La Specialità</a>
+                <a href="#menu">Menu</a>
+                <a href="#ordina">Ordina</a>
+                <a href="#recensioni">Dicono di Noi</a>
+                <a href="#contatti">Contatti</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO BANNER -->
+    <section class="hero-banner">
+        <div class="container">
+            <h1>Tradizione e Passione<br>A Tavola.</h1>
+            <p>Esplora l'autentica ospitalità italiana e le migliori specialità artigianali di pesce, carne e pizza a Milano.</p>
+            <div class="hero-buttons">
+                <!-- Bottone aggiornato con il link esterno richiesto -->
+                <a href="https://acesse.one/l4nu4od" target="_blank" class="cta-button">Prenota un Tavolo</a>
+                <a href="#menu" class="cta-button cta-secondary">Sfoglia il Menu</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- LA SPECIALITÀ -->
+    <section class="section-space" id="specialita">
+        <div class="bg-text-stroke">PIZZA</div>
+        <div class="container showcase-flex reveal-element">
+            <div class="showcase-text">
+                <h2>L'Arte della <span>Vera Pizza</span></h2>
+                <p>Ogni panetto viene steso a mano con cura e passione, seguendo una lievitazione naturale di oltre 48 ore. Il risultato è un disco leggero, fragrante e cotto sapientemente nel nostro tradizionale forno a legna per esaltare i saporiti piaceri della buona tavola.</p>
+            </div>
+            <div class="pizza-art-wrapper">
+                <div class="pizza-art-frame js-tilt-card">
+                    <img src="https://i.ibb.co/5WgXPYHn/Nuovo-progetto-19.png" alt="Dettaglio ravvicinato pizza cotta a legna San Giovanni 2" class="pizza-art-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU -->
+    <section class="section-space" id="menu">
+        <div class="bg-text-stroke">MENU</div>
+        <div class="container reveal-element">
+            <h2 class="section-title">Il Nostro <span>Menu</span></h2>
+            <p class="section-subtitle">Materie prime eccellenti selezionate ogni giorno per offrirti piatti indimenticabili.</p>
+            
+            <div class="menu-tabs-nav">
+                <button class="menu-tab-btn tab-active" onclick="switchCategory(event, 'pizze')">Le Pizze a Legna</button>
+                <button class="menu-tab-btn" onclick="switchCategory(event, 'piatti')">Primi e Secondi</button>
+                <button class="menu-tab-btn" onclick="switchCategory(event, 'dolci')">I Nostri Dolci</button>
+            </div>
+
+            <div class="menu-panes-wrapper">
+                <div class="menu-pane pane-active" id="pizze">
+                    <div class="card-perspective-wrapper">
+                        <div class="food-card js-tilt-card" onclick="simulateOrder('Margherita')">
+                            <div class="food-header"><span class="food-name">Margherita</span><span class="food-price">€ 7,50</span></div>
+                            <p class="food-details">Pomodoro, mozzarella fior di latte, olio EVO e basilico fresco.</p>
+                        </div>
+                    </div>
+                    <div class="card-perspective-wrapper">
+                        <div class="food-card js-tilt-card" onclick="simulateOrder('Diavola')">
+                            <div class="food-header"><span class="food-name">Diavola</span><span class="food-price">€ 9,00</span></div>
+                            <p class="food-details">Salsa di pomodoro, mozzarella e salame piccante di prima scelta.</p>
+                        </div>
+                    </div>
+                    <div class="card-perspective-wrapper">
+                        <div class="food-card js-tilt-card" onclick="simulateOrder('Capricciosa')">
+                            <div class="food-header"><span class="food-name">Capricciosa</span><span class="food-price">€ 10,00</span></div>
+                            <p class="food-details">Pomodoro, mozzarella, funghi, carciofi, prosciutto cotto e olive nere.</p>
+                        </div>
+                    </div>
+                    <div class="card-perspective-wrapper">
+                        <div class="food-card js-tilt-card" onclick="simulateOrder('Quattro Formaggi')">
+                            <div class="food-header"><span class="food-name">Quattro Formaggi</span><span class="food-price">€ 9,50</span></div>
+                            <p class="food-details">Mozzarella, gorgonzola dop, fontina e parmigiano reggiano.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-pane" id="piatti">
+                    <div class="card-perspective-wrapper">
+                        <div class="food-card js-tilt-card" onclick="simulateOrder('Spaghetti allo Scoglio')">
+                            <div class="food-header"><span class="food-name">Spaghetti allo Scoglio</span><span class="food-price">€ 14,00</span></div>
+                            <p class="food-details">Spaghetti saltati con frutti di mare freschi, calamari, gamberi e pomodorini.</p>
+                        </div>
+                    </div>
+                    <div class="card-perspective-wrapper">
+                        <div class="food-card js-tilt-card" onclick="simulateOrder('Grigliata Mista')">
+                            <div class="food-header"><span class="food-name">Grigliata Mista di Pesce</span><span class="food-price">€ 18,00</span></div>
+                            <p class="food-details">Assortimento di pesce fresco grigliato sapientemente dai nostri chef.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-pane" id="dolci">
+                    <div class="card-perspective-wrapper">
+                        <div class="food-card js-tilt-card" onclick="simulateOrder('Tiramisù')">
+                            <div class="food-header"><span class="food-name">Tiramisù Artigianale</span><span class="food-price">€ 5,00</span></div>
+                            <p class="food-details">Preparato in casa secondo la ricetta tradicional al caffè.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ORDINA ONLINE -->
+    <section class="section-space" id="ordina">
+        <div class="bg-text-stroke">DELIVERY</div>
+        <div class="container reveal-element">
+            <h2 class="section-title">Gustalo <span>a Casa Tua</span></h2>
+            <p class="section-subtitle">Ordina online in pochi passaggi tramite le nostre piattaforme di consegna partner.</p>
+            
+            <div class="delivery-grid">
+                <div class="card-perspective-wrapper">
+                    <div class="delivery-card js-tilt-card">
+                        <div class="platform-name deliveroo-theme">Deliveroo</div>
+                        <div class="delivery-badge">Consegna Rapida</div>
+                        <div class="delivery-time">Pronto a casa tua in <strong>15-20 min</strong></div>
+                        <a href="https://deliveroo.it/it/menu/milano/vigentino-corvetto-calvairate/ristorante-pizzeria-san-giovanni-2-corso-lodi" target="_blank" class="delivery-btn">Ordina con Deliveroo</a>
+                    </div>
+                </div>
+                <div class="card-perspective-wrapper">
+                    <div class="delivery-card js-tilt-card">
+                        <div class="platform-name justeat-theme">Just Eat</div>
+                        <div class="delivery-badge">Servizio Affidabile</div>
+                        <div class="delivery-time">Pronto a casa tua in <strong>20-30 min</strong></div>
+                        <a href="https://www.justeat.it/restaurants-ristorante-pizzeria-san-giovanni-2-milano/menu" target="_blank" class="delivery-btn">Ordina con Just Eat</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RECENSIONI -->
+    <section class="section-space" id="recensioni">
+        <div class="container reveal-element">
+            <h2 class="section-title">Esperienze dei <span>Clienti</span></h2>
+            <p class="section-subtitle">Cosa dice chi ha già provato la nostra cucina autentica.</p>
+            
+            <div class="reviews-layout">
+                <div class="card-perspective-wrapper"><div class="review-card js-tilt-card"><div class="stars-container">★★★★★</div><p class="review-quote">"Ottimo cibo e servizio. Sempre cordiali e simpatici. Pesce fresco e ottimi tagli di carne."</p><div class="review-author"><span>Vittorio Bersani</span><span class="author-source">Google</span></div></div></div>
+                <div class="card-perspective-wrapper"><div class="review-card js-tilt-card"><div class="stars-container">★★★★★</div><p class="review-quote">"In questo locale ci sono stato varie volte ed il personale è stato molto accogliente. Ottima la carne e il pesce."</p><div class="review-author"><span>Stefano Gerges</span><span class="author-source">Google</span></div></div></div>
+                <div class="card-perspective-wrapper"><div class="review-card js-tilt-card"><div class="stars-container">★★★★★</div><p class="review-quote">"Scoperto per caso anni fa ed è diventato ristorante fisso di fiducia. Tutto molto buono. Ottimo rapporto qualità prezzo."</p><div class="review-author"><span>Giovanna Albertini</span><span class="author-source">Google</span></div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTATTI (MODIFICATA IN SEMPLICE TESTO) -->
+    <section class="section-space" id="contatti">
+        <div class="container reveal-element">
+            <div class="contacts-text-block">
+                <span class="highlight-gold">Ristorante Pizzeria San Giovanni 2</span>
+                <h2>Vieni a Trovarci</h2>
+                <p><strong>Indirizzo:</strong> Corso Lodi, 71, 20139 Milano (MI)</p>
+                <p><strong>Telefono:</strong> 02 539 8097</p>
+                <p class="contacts-description">Un ambiente accogliente ed elegante dove la qualità delle materie prime incontra la vera ospitalità italiana. Ti aspettiamo a Milano per assaporare la nostra cucina tradizionale.</p>
+                
+                <!-- Bottone Prenota un Tavolo aggiuntivo richiesto nei contatti -->
+                <div style="margin-top: 50px;">
+                    <a href="https://acesse.one/l4nu4od" target="_blank" class="cta-button">Prenota un Tavolo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Ristorante Pizzeria San Giovanni 2 | Milano | Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <!-- CONTENITORE NOTIFICHE FLUTTUANTI -->
+    <div id="toast-container"></div>
+
+    <!-- LOGICA DI AZIONAMENTO JS -->
+    <script>
+        // 1. Mouse-Tilt Prospettico 3D calibrato
+        const tiltCards = document.querySelectorAll('.js-tilt-card');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((centerY - y) / centerY) * 12;
+                const rotateY = ((x - centerX) / centerX) * 12;
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+            });
+        });
+
+        // 2. Navigazione Hamburger Mobile
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+        mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // 3. Selezione Categorie del Menu Gastronomico
+        function switchCategory(event, categoryId) {
+            document.querySelectorAll('.menu-pane').forEach(pane => pane.classList.remove('pane-active'));
+            document.querySelectorAll('.menu-tab-btn').forEach(btn => btn.classList.remove('tab-active'));
+            document.getElementById(categoryId).classList.add('pane-active');
+            event.currentTarget.classList.add('tab-active');
+        }
+
+        // 4. Scroll Reveal (Attivazione Sezioni fluide)
+        const revealItems = document.querySelectorAll('.reveal-element');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        revealItems.forEach(item => revealObserver.observe(item));
+
+        // 5. Gestione Sistema di Notifica Fly-out (Toast) per i click sul menu
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<span class="toast-icon">✓</span> <span>${message}</span>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('toast-show'), 50);
+            
+            setTimeout(() => {
+                toast.classList.remove('toast-show');
+                setTimeout(() => toast.remove(), 400);
+            }, 4000);
+        }
+
+        function simulateOrder(itemName) {
+            showToast(`Hai selezionato: ${itemName}. Reindirizzamento alle opzioni di ordine online partner...`);
+        }
+    </script>
+</body>
+</html>
