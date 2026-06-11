@@ -5,30 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>San Giovanni 2 | Ristorante Pizzeria Milano | Eccellenza Gastronomica</title>
     
-    <!-- Importazione Font Premium da Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         /* ==========================================================================
-           1. CONFIGURAZIONE DELLE VARIABILI E DESIGN SYSTEM
+           1. ARCHITETTURA DEL DESIGN SYSTEM & VARIABILI D'AVANGUARDIA
            ========================================================================== */
         :root {
-            --bg-deep: #02040a;         
-            --bg-card: rgba(13, 20, 38, 0.45);      
-            --brand-primary: #3b82f6; 
-            --brand-glow: rgba(59, 130, 246, 0.3);     
-            --accent-gold: #fbbf24;     
-            --text-pure: #ffffff;      
-            --text-muted: #94a3b8;        
-            --border-glow: rgba(255, 255, 255, 0.05);
-            --radius-premium: 20px;
-            --radius-pill: 50px;
-            --ease-3d: cubic-bezier(0.2, 1, 0.3, 1);
+            --bg-deep-space: #030305;
+            --bg-card-glass: rgba(10, 12, 22, 0.5);
+            --border-glass-glow: rgba(212, 175, 55, 0.12);
+            --gold-primary: #d4af37;
+            --gold-bright: #f3e5ab;
+            --gold-glow: rgba(212, 175, 55, 0.18);
+            --text-platinum: #f5f5f7;
+            --text-dark-muted: #86868b;
+            --radius-curved: 24px;
+            --radius-pill: 500px;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            
+            /* Tipografia dinamica calibrata */
+            --fs-hero: clamp(48px, 7.5vw, 96px);
+            --fs-section: clamp(36px, 5vw, 64px);
+        }
 
-            /* Tipografia Fluida Reattiva */
-            --font-size-hero: clamp(48px, 7vw, 100px);
-            --font-size-section: clamp(36px, 5vw, 68px);
-            --font-size-card-title: clamp(18px, 1.8vw, 22px);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
         }
 
         html {
@@ -36,41 +41,25 @@
             scroll-padding-top: 100px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background-color: var(--bg-deep);
-            background-image: 
-                radial-gradient(circle at 5% 15%, #0b1532 0%, transparent 45%),
-                radial-gradient(circle at 95% 85%, #080d20 0%, transparent 55%);
-            color: var(--text-pure);
+            background-color: var(--bg-deep-space);
+            color: var(--text-platinum);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
             position: relative;
-            perspective: 1400px;
+            line-height: 1.62;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Effetti Aurora per lo Sfondo */
-        .ambient-aurora {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(180px);
+        /* Motore Canvas 3D a pieno schermo */
+        #canvas-3d-vortex {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
             pointer-events: none;
-            z-index: 1;
-            opacity: 0.15;
-            mix-blend-mode: plus-lighter;
-        }
-        .aurora-1 { top: 5%; left: -10%; width: 600px; height: 600px; background: var(--brand-primary); }
-        .aurora-2 { top: 50%; right: -10%; width: 700px; height: 700px; background: #6366f1; }
-
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 900;
-            letter-spacing: -1px;
         }
 
         .container {
@@ -78,92 +67,111 @@
             margin: 0 auto;
             padding: 0 30px;
             position: relative;
-            z-index: 5;
+            z-index: 2;
         }
 
-        .section-space {
-            padding: 120px 0;
+        .section-padding {
+            padding: 160px 0;
             position: relative;
         }
 
-        .section-title {
-            text-align: center;
-            font-size: var(--font-size-section);
-            line-height: 1.05;
-            margin-bottom: 20px;
-            background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto 60px auto;
-            font-size: 16px;
-        }
-
-        /* Scritta di Sfondo Decorativa */
-        .bg-text-stroke {
-            position: absolute;
+        h1, h2, h3 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(100px, 15vw, 220px);
-            font-weight: 900;
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.02);
-            pointer-events: none;
-            z-index: 1;
-            user-select: none;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
-        /* Animazioni allo Scroll */
-        .reveal-element {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1s var(--ease-3d), transform 1s var(--ease-3d);
+        .section-header-center {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 90px auto;
         }
-        .reveal-element.revealed {
+
+        .section-title-premium {
+            font-size: var(--fs-section);
+            line-height: 1.1;
+            margin-bottom: 25px;
+        }
+
+        .section-title-premium span {
+            color: var(--gold-primary);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .section-subtitle-premium {
+            color: var(--text-dark-muted);
+            font-size: 17px;
+            font-weight: 300;
+            letter-spacing: -0.01em;
+        }
+
+        /* Animazione Avanzata per Ingressi di Sezione */
+        .reveal-node {
+            opacity: 0;
+            transform: translateY(50px) scale(0.98);
+            transition: opacity 1.4s var(--ease-out-expo), transform 1.4s var(--ease-out-expo);
+        }
+        .reveal-node.revealed {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         /* ==========================================================================
-           2. HEADER & NAVIGATION
+           2. HEADER MUTANTE AD ISOLA (MORPHING CAPSULE)
            ========================================================================== */
         header {
-            background-color: rgba(2, 4, 10, 0.7);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-bottom: 1px solid var(--border-glow);
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            width: 100%;
             z-index: 1000;
+            transition: all 0.6s var(--ease-out-expo);
+            padding: 30px 0;
         }
 
-        .nav-flex {
+        /* Stato contratto della Navbar su Scroll */
+        header.scrolled {
+            padding: 15px 0;
+        }
+
+        header.scrolled .nav-container-wrapper {
+            background: rgba(10, 12, 22, 0.7);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: var(--radius-pill);
+            padding: 12px 35px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.05);
+            max-width: 1100px;
+        }
+
+        .nav-container-wrapper {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 24px 0;
+            width: 100%;
+            margin: 0 auto;
+            transition: all 0.5s var(--ease-out-expo);
+            padding: 0 10px;
         }
 
-        .logo {
-            font-size: 32px;
+        .logo-luxury {
+            font-size: 24px;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--text-platinum);
             text-decoration: none;
             font-family: 'Playfair Display', serif;
+            letter-spacing: -0.5px;
+            transition: transform 0.3s;
         }
-        .logo span { color: var(--brand-primary); }
+        .logo-luxury span { color: var(--gold-primary); }
+        .logo-luxury:hover { transform: scale(1.02); }
 
-        .menu-links a {
+        .nav-navigation-links a {
             text-decoration: none;
-            color: var(--text-muted);
-            font-weight: 700;
+            color: var(--text-dark-muted);
+            font-weight: 500;
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 2.5px;
@@ -171,559 +179,619 @@
             transition: color 0.3s;
             position: relative;
         }
-        .menu-links a:hover { color: #ffffff; }
-        .menu-links a::after {
-            content: ''; position: absolute; bottom: -8px; left: 0;
-            width: 0; height: 2px; background-color: var(--brand-primary);
-            transition: width 0.3s var(--ease-3d);
+        .nav-navigation-links a:hover { color: var(--gold-primary); }
+        
+        .nav-navigation-links a::before {
+            content: ''; position: absolute; bottom: -6px; left: 50%;
+            width: 0; height: 2px; background-color: var(--gold-primary);
+            transition: all 0.3s var(--ease-out-expo); transform: translateX(-50%);
+            border-radius: 2px;
         }
-        .menu-links a:hover::after { width: 100%; }
+        .nav-navigation-links a:hover::before { width: 15px; }
 
-        .menu-toggle { display: none; flex-direction: column; cursor: pointer; gap: 7px; }
-        .menu-toggle span { display: block; width: 30px; height: 2px; background-color: #ffffff; }
+        .hamburger-icon { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
+        .hamburger-icon span { display: block; width: 24px; height: 2px; background-color: #ffffff; transition: 0.3s; }
 
         @media (max-width: 991px) {
-            .menu-links {
+            .nav-navigation-links {
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
-                background-color: #030611; flex-direction: column;
-                justify-content: center; align-items: center; gap: 45px; transition: 0.7s var(--ease-3d);
+                background-color: var(--bg-deep-space); flex-direction: column;
+                justify-content: center; align-items: center; gap: 45px; transition: 0.6s var(--ease-out-expo);
             }
-            .menu-links.active { right: 0; }
-            .menu-links a { margin: 0; font-size: 20px; }
-            .menu-toggle { display: flex; }
+            .nav-navigation-links.active { right: 0; }
+            .nav-navigation-links a { margin: 0; font-size: 16px; }
+            .hamburger-icon { display: flex; z-index: 1001; }
+            header.scrolled .nav-container-wrapper { border-radius: 0; border: none; border-bottom: 1px solid var(--border-glass-glow); padding: 15px 20px; }
         }
 
         /* ==========================================================================
-           3. HERO BANNER
+           3. HERO BANNER ASIMMETRICO CINEMATOGRAFICO
            ========================================================================== */
-        .hero-banner {
-            background: linear-gradient(rgba(2, 4, 10, 0.3) 0%, rgba(2, 4, 10, 0.98) 100%), 
-                        url('https://i.ibb.co/YTQxZc2c/image.png') no-repeat center center/cover;
-            padding: 260px 0 180px 0;
-            text-align: center;
-        }
-
-        .hero-banner h1 {
-            font-size: var(--font-size-hero);
-            line-height: 0.95;
-            margin-bottom: 35px;
-            background: linear-gradient(to bottom, #ffffff 40%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-banner p {
-            font-size: clamp(18px, 2.5vw, 24px);
-            color: #cbd5e1;
-            max-width: 800px;
-            margin: 0 auto 60px auto;
-            font-weight: 300;
-            line-height: 1.6;
-        }
-
-        .hero-buttons {
+        .hero-premium-viewport {
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(circle at 70% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 60%),
+                        linear-gradient(rgba(3, 3, 5, 0.2) 0%, rgba(3, 3, 5, 0.95) 100%), 
+                        url('https://i.ibb.co/YTQxZc2c/image.png') no-repeat center center/cover;
+            padding-top: 120px;
+        }
+
+        .hero-text-aligner {
+            max-width: 850px;
+        }
+
+        .hero-premium-viewport h1 {
+            font-size: var(--fs-hero);
+            line-height: 1.02;
+            margin-bottom: 35px;
+            color: var(--text-platinum);
+            letter-spacing: -0.03em;
+        }
+        .hero-premium-viewport h1 span {
+            color: var(--gold-primary);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .hero-premium-viewport p {
+            font-size: clamp(16px, 2.2vw, 21px);
+            color: var(--text-dark-muted);
+            max-width: 650px;
+            margin-bottom: 55px;
+            font-weight: 300;
+        }
+
+        .hero-action-flex {
+            display: flex;
+            gap: 25px;
             flex-wrap: wrap;
         }
 
-        .cta-button {
+        /* Pulsanti Magnetici ed Eleganti */
+        .btn-luxury {
             display: inline-block;
-            padding: 22px 48px;
-            color: #ffffff;
+            padding: 22px 46px;
+            color: #030305;
             text-decoration: none;
-            font-weight: 800;
-            font-size: 13px;
+            font-weight: 600;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 2.5px;
+            letter-spacing: 2px;
             border-radius: var(--radius-pill);
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.35);
-            transition: all 0.4s var(--ease-3d);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            cursor: pointer;
+            background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-primary) 100%);
+            box-shadow: 0 10px 35px rgba(212, 175, 55, 0.25);
+            transition: all 0.5s var(--ease-out-expo);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
         }
-        .cta-button:hover {
-            transform: translateY(-5px) scale(1.03);
-            box-shadow: 0 25px 50px rgba(37, 99, 235, 0.55);
+        .btn-luxury:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(212, 175, 55, 0.4);
         }
 
-        .cta-secondary {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-glow);
+        .btn-luxury-secondary {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-platinum);
             box-shadow: none;
         }
-        .cta-secondary:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
+        .btn-luxury-secondary:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
+            box-shadow: none;
         }
 
         /* ==========================================================================
-           4. VETRINA PROSPETTICA
+           4. VETRINA PROSPETTICA DI PRESTIGIO
            ========================================================================== */
-        .showcase-flex { display: flex; align-items: center; gap: 100px; }
-        .showcase-text { flex: 1.2; }
-        .showcase-text h2 { font-size: calc(var(--font-size-section) - 8px); margin-bottom: 30px; line-height: 1.1; }
-        .showcase-text h2 span { color: var(--accent-gold); font-style: italic; }
-        .showcase-text p { color: #cbd5e1; font-size: 18px; line-height: 1.9; font-weight: 300; }
-
-        .pizza-art-wrapper { flex: 0.8; perspective: 1200px; }
-        .pizza-art-frame {
-            width: 100%; max-width: 460px; aspect-ratio: 1 / 1;
-            position: relative; overflow: hidden; border-radius: var(--radius-premium); 
-            border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
-            transform-style: preserve-3d; transition: transform 0.2s var(--ease-3d);
+        .showcase-asymmetric-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 90px;
+            align-items: center;
         }
-        .pizza-art-img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.03); }
+        .showcase-info h2 { font-size: clamp(32px, 4vw, 54px); margin-bottom: 30px; line-height: 1.1; }
+        .showcase-info h2 span { color: var(--gold-primary); font-style: italic; font-weight: 400; }
+        .showcase-info p { color: var(--text-dark-muted); font-size: 17px; line-height: 1.8; font-weight: 300; }
+
+        .frame-3d-container {
+            position: relative;
+            perspective: 1000px;
+        }
+        .frame-3d-elevation {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: var(--radius-curved);
+            border: 1px solid var(--border-glass-glow);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            transform: rotateY(-8deg) rotateX(5deg);
+            transition: all 0.6s var(--ease-out-expo);
+        }
+        .frame-3d-container:hover .frame-3d-elevation {
+            transform: rotateY(0deg) rotateX(0deg) scale(1.03);
+            border-color: var(--gold-primary);
+        }
+        .frame-3d-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
+        .frame-3d-container:hover .frame-3d-img { transform: scale(1.05); }
 
         @media (max-width: 900px) {
-            .showcase-flex { flex-direction: column-reverse; text-align: center; gap: 60px; }
-            .pizza-art-frame { max-width: 360px; margin: 0 auto; }
+            .showcase-asymmetric-grid { grid-template-columns: 1fr; text-align: center; gap: 60px; }
+            .frame-3d-elevation { max-width: 380px; margin: 0 auto; transform: none; }
         }
 
         /* ==========================================================================
-           5. SEZIONE MENU GASTRONOMICO ESTESO
+           5. INTERFACCIA MENU GASTRONOMICO (OLOGRAMMA 3D CON PERSPECTIVE TILT)
            ========================================================================== */
-        .menu-tabs-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 60px; flex-wrap: wrap; }
-        .menu-tab-btn {
-            background-color: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-glow);
-            padding: 18px 36px; color: var(--text-muted); border-radius: var(--radius-pill);
-            font-size: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase;
-            letter-spacing: 2px; transition: all 0.4s var(--ease-3d);
+        .tabs-premium-center { display: flex; justify-content: center; gap: 15px; margin-bottom: 75px; flex-wrap: wrap; }
+        .tab-btn-premium {
+            background-color: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 18px 36px; color: var(--text-dark-muted); border-radius: var(--radius-pill);
+            font-size: 11px; font-weight: 600; cursor: pointer; text-transform: uppercase;
+            letter-spacing: 2px; transition: all 0.4s var(--ease-out-expo);
         }
-        .menu-tab-btn:hover, .menu-tab-btn.tab-active {
-            background-color: #ffffff; color: #02040a; border-color: #ffffff;
-            box-shadow: 0 15px 35px rgba(255, 255, 255, 0.15);
+        .tab-btn-premium:hover, .tab-btn-premium.tab-active {
+            background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-primary) 100%);
+            color: #030305; border-color: transparent;
+            box-shadow: 0 12px 30px rgba(212, 175, 55, 0.25);
         }
 
-        .menu-pane { display: none; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 30px; }
-        .menu-pane.pane-active { display: grid; }
+        .menu-grid-display { display: none; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 30px; perspective: 1000px; }
+        .menu-grid-display.pane-active { display: grid; }
         
-        /* Sotto-separatori interni professionali per i Primi */
-        .menu-inner-heading {
+        .menu-inner-separator {
             grid-column: 1 / -1;
             font-family: 'Playfair Display', serif;
             font-size: 28px;
-            color: var(--accent-gold);
-            margin: 30px 0 10px 0;
-            padding-bottom: 10px;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-        }
-        .menu-inner-heading:first-child { margin-top: 0; }
-
-        .card-perspective-wrapper { perspective: 1000px; }
-
-        .food-card {
-            background: linear-gradient(135deg, rgba(18, 26, 48, 0.5) 0%, rgba(10, 14, 26, 0.6) 100%);
-            padding: 35px 30px; border-radius: var(--radius-premium); border: 1px solid var(--border-glow);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: relative;
-            transform-style: preserve-3d; transition: transform 0.15s var(--ease-3d), border-color 0.4s, box-shadow 0.4s;
-            cursor: pointer;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .food-card:hover {
-            border-color: rgba(59, 130, 246, 0.45);
-            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.65), 0 0 30px var(--brand-glow);
-        }
-
-        .food-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; transform: translateZ(40px); }
-        .food-name { font-family: 'Playfair Display', serif; font-size: var(--font-size-card-title); font-weight: 700; color: #ffffff; padding-right: 10px; }
-        .food-price { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--accent-gold); white-space: nowrap; }
-        .food-details { font-size: 14px; color: var(--text-muted); line-height: 1.6; font-weight: 300; transform: translateZ(20px); }
-
-        /* ==========================================================================
-           6. CONSEGNA A DOMICILIO & RECENSIONI
-           ========================================================================== */
-        .delivery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 40px; max-width: 850px; margin: 0 auto; }
-        .delivery-card {
-            background-color: rgba(12, 18, 34, 0.5); border: 1px solid var(--border-glow); padding: 55px 40px;
-            border-radius: var(--radius-premium); display: flex; flex-direction: column; align-items: center;
-            transform-style: preserve-3d; transition: transform 0.2s var(--ease-3d); backdrop-filter: blur(15px);
-        }
-        .platform-name { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 900; margin-bottom: 15px; }
-        .deliveroo-theme { color: #00cdbc; text-shadow: 0 12px 30px rgba(0, 205, 188, 0.25); }
-        .justeat-theme { color: #f31a22; text-shadow: 0 12px 30px rgba(243, 26, 34, 0.25); }
-        
-        .delivery-badge {
-            background-color: rgba(251, 191, 36, 0.05); padding: 6px 20px; border-radius: var(--radius-pill);
-            font-size: 11px; font-weight: 700; color: var(--accent-gold); margin-bottom: 35px;
-            border: 1px solid rgba(251, 191, 36, 0.18); text-transform: uppercase;
-        }
-        .delivery-time { font-size: 15px; color: #e2e8f0; margin-bottom: 45px; flex-grow: 1; font-weight: 300; }
-        .delivery-time strong { color: var(--accent-gold); }
-        
-        .delivery-btn {
-            display: inline-block; width: 100%; padding: 16px 24px; background-color: rgba(255, 255, 255, 0.02);
-            color: #ffffff; text-decoration: none; font-weight: 700; font-size: 12px; text-transform: uppercase;
-            letter-spacing: 1.5px; border-radius: 14px; transition: all 0.3s; border: 1px solid rgba(255, 255, 255, 0.08);
-            text-align: center;
-        }
-        .delivery-card:hover .delivery-btn { background-color: var(--brand-primary); border-color: var(--brand-primary); box-shadow: 0 12px 25px rgba(37, 99, 235, 0.45); }
-
-        .reviews-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; }
-        .review-card {
-            background-color: rgba(14, 21, 38, 0.35); padding: 45px 40px; border-radius: var(--radius-premium);
-            border: 1px solid var(--border-glow); display: flex; flex-direction: column; transform-style: preserve-3d; transition: transform 0.2s var(--ease-3d);
-        }
-        .stars-container { color: var(--accent-gold); font-size: 13px; margin-bottom: 25px; }
-        .review-quote { font-size: 16px; color: #e2e8f0; font-style: italic; margin-bottom: 40px; line-height: 1.85; flex-grow: 1; font-weight: 300; }
-        .review-author { font-weight: 700; font-size: 14px; padding-top: 25px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); }
-        .author-source { font-size: 11px; color: var(--text-muted); background-color: rgba(255, 255, 255, 0.04); padding: 4px 12px; border-radius: 6px; }
-
-        /* ==========================================================================
-           7. SEZIONE CONTATTI (SEMPLICE TESTO)
-           ========================================================================== */
-        .contacts-text-block {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .contacts-text-block h2 {
-            font-size: var(--font-size-section);
-            margin-bottom: 30px;
-            background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .contacts-text-block p {
-            font-size: 18px;
-            color: #cbd5e1;
-            line-height: 1.8;
-            margin-bottom: 12px;
+            color: var(--gold-primary);
+            margin: 45px 0 15px 0;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
             font-weight: 400;
+            letter-spacing: 0.5px;
         }
-        .contacts-text-block .highlight-gold {
-            color: var(--accent-gold);
-            font-weight: 700;
-            font-size: 22px;
+        .menu-inner-separator:first-child { margin-top: 0; }
+
+        /* Card con Olgramma e tracciamento mouse */
+        .card-3d-tilt {
+            background: var(--bg-card-glass);
+            padding: 35px; border-radius: var(--radius-curved); border: 1px solid var(--border-glass-glow);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            transition: border-color 0.3s, box-shadow 0.3s;
+            cursor: pointer; height: 100%; display: flex; flex-direction: column; justify-content: space-between;
+            position: relative; overflow: hidden;
+            transform-style: preserve-3d;
+        }
+        
+        /* Luce di rifrazione interna (Spotlight Sheen) gestita via JS */
+        .card-3d-tilt::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(800px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(212, 175, 55, 0.08), transparent 40%);
+            z-index: 1; pointer-events: none;
+        }
+
+        .card-3d-tilt:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 30px var(--gold-glow);
+        }
+
+        .card-content-holder {
+            position: relative;
+            z-index: 2;
+            transform: translateZ(30px); /* Spinge il testo in avanti nello spazio 3D */
+        }
+
+        .food-flex-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 15px; }
+        .food-title-lux { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; color: var(--text-platinum); }
+        .food-price-lux { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 600; color: var(--gold-primary); }
+        .food-desc-lux { font-size: 14px; color: var(--text-dark-muted); line-height: 1.6; font-weight: 300; }
+
+        /* ==========================================================================
+           6. SEZIONI CONSEGNA E RECENSIONI (GLASSMORPHISM ESTREMO)
+           ========================================================================== */
+        .delivery-premium-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; max-width: 900px; margin: 0 auto; }
+        .delivery-glass-box {
+            background-color: var(--bg-card-glass); border: 1px solid var(--border-glass-glow); padding: 55px 40px;
+            border-radius: var(--radius-curved); display: flex; flex-direction: column; align-items: center;
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); transition: all 0.4s var(--ease-out-expo);
+        }
+        .delivery-glass-box:hover {
+            transform: translateY(-8px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+        .brand-del-title { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; margin-bottom: 15px; }
+        .color-deliveroo { color: #00cdbc; }
+        .color-justeat { color: #f31a22; }
+        
+        .badge-pill-gold {
+            background-color: rgba(212, 175, 55, 0.05); padding: 6px 20px; border-radius: var(--radius-pill);
+            font-size: 11px; font-weight: 600; color: var(--gold-primary); margin-bottom: 35px;
+            border: 1px solid rgba(212, 175, 55, 0.18); text-transform: uppercase; letter-spacing: 1.5px;
+        }
+        .time-info-text { font-size: 15px; color: #e5e5ea; margin-bottom: 40px; flex-grow: 1; font-weight: 300; }
+        .time-info-text strong { color: var(--gold-primary); font-weight: 500; }
+        
+        .btn-del-action {
+            display: inline-block; width: 100%; padding: 18px 25px; background-color: rgba(255, 255, 255, 0.01);
+            color: #ffffff; text-decoration: none; font-weight: 600; font-size: 11px; text-transform: uppercase;
+            letter-spacing: 1.5px; border-radius: 12px; transition: all 0.4s; border: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: center;
+        }
+        .delivery-glass-box:hover .btn-del-action { 
+            background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-primary) 100%);
+            border-color: transparent; color: #030305;
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+        }
+
+        .reviews-luxury-flex { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .review-luxury-card {
+            background-color: var(--bg-card-glass); padding: 45px; border-radius: var(--radius-curved);
+            border: 1px solid var(--border-glass-glow); display: flex; flex-direction: column;
+            transition: all 0.4s var(--ease-out-expo); backdrop-filter: blur(15px);
+        }
+        .review-luxury-card:hover { transform: translateY(-6px); border-color: rgba(212, 175, 55, 0.35); }
+        .stars-lux-row { color: var(--gold-primary); font-size: 13px; margin-bottom: 25px; letter-spacing: 3px; }
+        .quote-lux-text { font-size: 15px; color: #e5e5ea; font-style: italic; margin-bottom: 35px; line-height: 1.8; flex-grow: 1; font-weight: 300; }
+        .author-lux-footer { font-weight: 600; font-size: 14px; padding-top: 25px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.04); }
+        .source-badge-lux { font-size: 11px; color: var(--text-dark-muted); background-color: rgba(255, 255, 255, 0.03); padding: 4px 12px; border-radius: 6px; font-weight: 400; }
+
+        /* ==========================================================================
+           7. SEZIONE CONTATTI E PIÈ DI PAGINA (BLOCCO CAPSOLARE)
+           ========================================================================== */
+        .contacts-capsule-island {
+            text-align: center;
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--bg-card-glass);
+            padding: 80px 50px;
+            border-radius: var(--radius-curved);
+            border: 1px solid var(--border-glass-glow);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 40px 90px rgba(0,0,0,0.5);
+        }
+        .contacts-capsule-island h2 { font-size: var(--fs-section); margin-bottom: 30px; }
+        .contacts-capsule-island p { font-size: 18px; color: #e5e5ea; margin-bottom: 15px; font-weight: 300; }
+        .contacts-capsule-island p strong { color: var(--gold-primary); font-weight: 500; }
+        
+        .contacts-capsule-island .brand-gold-highlight {
+            color: var(--gold-primary);
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: 26px;
             display: block;
             margin-bottom: 20px;
+            letter-spacing: 0.5px;
         }
-        .contacts-description {
-            color: var(--text-muted) !important;
-            max-width: 620px;
+        .desc-contacts-muted {
+            color: var(--text-dark-muted) !important;
+            max-width: 600px;
             margin: 35px auto 0 auto;
-            font-size: 15px !important;
-            font-weight: 300;
+            font-size: 14px !important;
+            line-height: 1.7;
         }
 
-        footer { background-color: #010205; border-top: 1px solid var(--border-glow); padding: 50px 0; text-align: center; font-size: 13px; color: var(--text-muted); }
+        footer { 
+            background-color: #020203; border-top: 1px solid rgba(255, 255, 255, 0.02); 
+            padding: 45px 0; text-align: center; font-size: 13px; color: var(--text-dark-muted);
+            position: relative; z-index: 2;
+            letter-spacing: 0.5px;
+        }
 
-        /* Sistema di Notifica Fly-out */
-        #toast-container {
-            position: fixed; bottom: 40px; right: 40px; z-index: 3000;
-            display: flex; flex-direction: column; gap: 15px; pointer-events: none;
+        /* Toast Popup Notifiche Minimalista */
+        #toast-box-container {
+            position: fixed; bottom: 35px; right: 35px; z-index: 3000;
+            display: flex; flex-direction: column; gap: 12px; pointer-events: none;
         }
-        .toast {
-            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
-            border: 1px solid rgba(59, 130, 246, 0.4); padding: 20px 30px;
-            border-radius: 16px; color: #ffffff; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 12px;
-            transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .premium-toast {
+            background: #0a0b12; border: 1px solid var(--gold-primary); padding: 20px 30px;
+            border-radius: 16px; color: #ffffff; box-shadow: 0 20px 45px rgba(0,0,0,0.5);
+            font-size: 14px; font-weight: 400; display: flex; align-items: center; gap: 12px;
+            transform: translateX(130%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(10px);
         }
-        .toast.toast-show { transform: translateX(0); }
-        .toast-icon { color: var(--accent-gold); font-weight: bold; }
+        .premium-toast.toast-active { transform: translateX(0); }
+        .toast-gold-dot { color: var(--gold-primary); font-size: 16px; }
 
         @media (max-width: 768px) {
-            .section-title { font-size: 44px; }
-            .hero-banner h1 { font-size: 54px; }
-            #toast-container { right: 20px; bottom: 20px; left: 20px; }
+            .section-title-premium { font-size: 36px; }
+            .hero-premium-viewport h1 { font-size: 42px; }
+            .contacts-capsule-island { padding: 50px 20px; }
+            #toast-box-container { right: 20px; bottom: 20px; left: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="ambient-aurora aurora-1"></div>
-    <div class="ambient-aurora aurora-2"></div>
+    <canvas id="canvas-3d-vortex"></canvas>
 
-    <!-- NAVBAR -->
-    <header>
-        <div class="container nav-flex">
-            <a href="#" class="logo"><span>Ristorante </span>San Giovanni <span>2</span></a>
-            <div class="menu-toggle" id="mobile-menu">
-                <span></span><span></span><span></span>
+    <header id="dynamic-header">
+        <div class="container">
+            <div class="nav-container-wrapper">
+                <a href="#" class="logo-luxury"><span>Ristorante </span>San Giovanni <span>2</span></a>
+                <div class="hamburger-icon" id="hamburger-trigger">
+                    <span></span><span></span><span></span>
+                </div>
+                <nav class="nav-navigation-links" id="navigation-nodes">
+                    <a href="#specialita">La Specialità</a>
+                    <a href="#menu">Menu</a>
+                    <a href="#ordina">Ordina</a>
+                    <a href="#recensioni">Dicono di Noi</a>
+                    <a href="#contatti">Contatti</a>
+                </nav>
             </div>
-            <nav class="menu-links" id="nav-links">
-                <a href="#specialita">La Specialità</a>
-                <a href="#menu">Menu</a>
-                <a href="#ordina">Ordina</a>
-                <a href="#recensioni">Dicono di Noi</a>
-                <a href="#contatti">Contatti</a>
-            </nav>
         </div>
     </header>
 
-    <!-- HERO BANNER -->
-    <section class="hero-banner">
+    <section class="hero-premium-viewport">
         <div class="container">
-            <h1>Tradizione e Passione<br>A Tavola.</h1>
-            <p>Esplora l'autentica ospitalità italiana e le migliori specialità artigianali di pesce, carne e pizza a Milano.</p>
-            <div class="hero-buttons">
-                <a href="https://acesse.one/l4nu4od" target="_blank" class="cta-button">Prenota un Tavolo</a>
-                <a href="#menu" class="cta-button cta-secondary">Sfoglia il Menu</a>
+            <div class="hero-text-aligner">
+                <h1>Tradizione e Passione<br><span>A Tavola.</span></h1>
+                <p>Esplora l'autentica ospitalità italiana e le migliori specialità artigianali di pesce, carne e pizza a Milano.</p>
+                <div class="hero-action-flex">
+                    <a href="https://acesse.one/l4nu4od" target="_blank" class="btn-luxury">Prenota un Tavolo</a>
+                    <a href="#menu" class="btn-luxury btn-luxury-secondary">Sfoglia il Menu</a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- LA SPECIALITÀ -->
-    <section class="section-space" id="specialita">
-        <div class="bg-text-stroke">PIZZA</div>
-        <div class="container showcase-flex reveal-element">
-            <div class="showcase-text">
+    <section class="section-padding" id="specialita">
+        <div class="container showcase-asymmetric-grid reveal-node">
+            <div class="showcase-info">
                 <h2>L'Arte della <span>Vera Pizza</span></h2>
                 <p>Ogni panetto viene steso a mano con cura e passione, seguendo una lievitazione naturale di oltre 48 ore. Il risultato è un disco leggero, fragrante e cotto sapientemente nel nostro tradizionale forno a legna per esaltare i saporiti piaceri della buona tavola.</p>
             </div>
-            <div class="pizza-art-wrapper">
-                <div class="pizza-art-frame js-tilt-card">
-                    <img src="https://i.ibb.co/5WgXPYHn/Nuovo-progetto-19.png" alt="Dettaglio ravvicinato pizza cotta a legna San Giovanni 2" class="pizza-art-img">
+            <div class="frame-3d-container">
+                <div class="frame-3d-elevation">
+                    <img src="https://i.ibb.co/5WgXPYHn/Nuovo-progetto-19.png" alt="Dettaglio ravvicinato pizza cotta a legna San Giovanni 2" class="frame-3d-img">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SEZIONE MENU COMPLETA -->
-    <section class="section-space" id="menu">
-        <div class="bg-text-stroke">GUSTO</div>
-        <div class="container reveal-element">
-            <h2 class="section-title">Il Nostro <span>Menu</span></h2>
-            <p class="section-subtitle">Materie prime eccellenti selezionate ogni giorno per offrirti piatti indimenticabili ed autentici.</p>
+    <section class="section-padding" id="menu">
+        <div class="container reveal-node">
+            <div class="section-header-center">
+                <h2 class="section-title-premium">Il Nostro <span>Menu</span></h2>
+                <p class="section-subtitle-premium">Materie prime eccellenti selezionate ogni giorno per offrirti piatti indimenticabili ed autentici.</p>
+            </div>
             
-            <div class="menu-tabs-nav">
-                <button class="menu-tab-btn tab-active" onclick="switchCategory(event, 'pizze')">Le Pizze a Legna</button>
-                <button class="menu-tab-btn" onclick="switchCategory(event, 'primi')">I Nostri Primi</button>
-                <button class="menu-tab-btn" onclick="switchCategory(event, 'bevande')">Le Bevande</button>
+            <div class="tabs-premium-center">
+                <button class="tab-btn-premium tab-active" onclick="changeMenuCategory(event, 'pizze')">Le Pizze a Legna</button>
+                <button class="tab-btn-premium" onclick="changeMenuCategory(event, 'primi')">I Nostri Primi</button>
+                <button class="tab-btn-premium" onclick="changeMenuCategory(event, 'bevande')">Le Bevande</button>
             </div>
 
-            <div class="menu-panes-wrapper">
+            <div class="menu-panes-container">
                 
-                <!-- SOTTO-MENU: LE PIZZE -->
-                <div class="menu-pane pane-active" id="pizze">
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Margherita')">
-                            <div class="food-header"><span class="food-name">Margherita</span><span class="food-price">€ 7,50</span></div>
-                            <p class="food-details">Salsa di pomodoro, mozzarella fior di latte e foglioline di basilico fresco.</p>
+                <div class="menu-grid-display pane-active" id="pizze">
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Margherita')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Margherita</span><span class="food-price-lux">€ 7,50</span></div>
+                            <p class="food-desc-lux">Salsa di pomodoro, mozzarella fior di latte e foglioline di basilico fresco.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Salame Piccante')">
-                            <div class="food-header"><span class="food-name">Salame Piccante</span><span class="food-price">€ 9,00</span></div>
-                            <p class="food-details">Salsa di pomodoro, mozzarella fior di latte e fette di salame piccante selezionato.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Salame Piccante')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Salame Piccante</span><span class="food-price-lux">€ 9,00</span></div>
+                            <p class="food-desc-lux">Salsa di pomodoro, mozzarella fior di latte e fette di salame piccante selezionato.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Rucola e Pomodoro')">
-                            <div class="food-header"><span class="food-name">Rucola e Pomodoro</span><span class="food-price">€ 9,00</span></div>
-                            <p class="food-details">Salsa di pomodoro, mozzarella fior di latte, pomodorini freschi tagliati a spicchi e rucola.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Rucola e Pomodoro')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Rucola e Pomodoro</span><span class="food-price-lux">€ 9,00</span></div>
+                            <p class="food-desc-lux">Salsa di pomodoro, mozzarella fior di latte, pomodorini freschi tagliati a spicchi e rucola.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Siciliana')">
-                            <div class="food-header"><span class="food-name">Siciliana</span><span class="food-price">€ 9,00</span></div>
-                            <p class="food-details">Salsa di pomodoro, origano profumato, acciughe, capperi e olive nere.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Siciliana')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Siciliana</span><span class="food-price-lux">€ 9,00</span></div>
+                            <p class="food-desc-lux">Salsa di pomodoro, origano profumato, acciughe, capperi e olive nere.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Parmigiana')">
-                            <div class="food-header"><span class="food-name">Parmigiana</span><span class="food-price">€ 9,00</span></div>
-                            <p class="food-details">La nostra ricetta tradizionale al forno applicata alla fragranza della pizza.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Parmigiana')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Parmigiana</span><span class="food-price-lux">€ 9,00</span></div>
+                            <p class="food-desc-lux">La nostra ricetta tradicional al forno applicata alla fragranza della pizza.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Napoletana')">
-                            <div class="food-header"><span class="food-name">Napoletana</span><span class="food-price">€ 9,50</span></div>
-                            <p class="food-details">Salsa di pomodoro, mozzarella fior di latte, acciughe saporite e origano.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Napoletana')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Napoletana</span><span class="food-price-lux">€ 9,50</span></div>
+                            <p class="food-desc-lux">Salsa di pomodoro, mozzarella fior di latte, acciughe saporite e origano.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Prosciutto Cotto')">
-                            <div class="food-header"><span class="food-name">Prosciutto Cotto</span><span class="food-price">€ 9,50</span></div>
-                            <p class="food-details">Salsa di pomodoro, mozzarella fior di latte e delicato prosciutto cotto d'alta qualità.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Prosciutto Cotto')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Prosciutto Cotto</span><span class="food-price-lux">€ 9,50</span></div>
+                            <p class="food-desc-lux">Salsa di pomodoro, mozzarella fior di latte e delicato prosciutto cotto d'alta qualità.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Regina')">
-                            <div class="food-header"><span class="food-name">Regina</span><span class="food-price">€ 10,00</span></div>
-                            <p class="food-details">Salsa di pomodoro, mozzarella fior di latte, funghi champignon e prosciutto cotto.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Regina')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Regina</span><span class="food-price-lux">€ 10,00</span></div>
+                            <p class="food-desc-lux">Salsa di pomodoro, mozzarella fior di latte, funghi champignon e prosciutto cotto.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Margherita con Patatine')">
-                            <div class="food-header"><span class="food-name">Margherita con Patatine</span><span class="food-price">€ 10,00</span></div>
-                            <p class="food-details">La classica base margherita arricchita con una cascata di patatine fritte dorate.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Margherita con Patatine')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Margherita con Patatine</span><span class="food-price-lux">€ 10,00</span></div>
+                            <p class="food-desc-lux">La classica base margherita arricchita con una cascata di patatine fritte dorate.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('4 Stagioni')">
-                            <div class="food-header"><span class="food-name">4 Stagioni</span><span class="food-price">€ 10,50</span></div>
-                            <p class="food-details">Salsa di pomodoro, mozzarella, prosciutto cotto, carciofini, olive nere e funghi.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('4 Stagioni')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">4 Stagioni</span><span class="food-price-lux">€ 10,50</span></div>
+                            <p class="food-desc-lux">Salsa di pomodoro, mozzarella, prosciutto cotto, carciofini, olive nere e funghi.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Ortolana')">
-                            <div class="food-header"><span class="food-name">Ortolana</span><span class="food-price">€ 10,50</span></div>
-                            <p class="food-details">Salsa di pomodoro, mozzarella fior di latte e un assortimento di verdure grigliate fresche.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Ortolana')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Ortolana</span><span class="food-price-lux">€ 10,50</span></div>
+                            <p class="food-desc-lux">Salsa di pomodoro, mozzarella fior di latte e un assortimento di verdure grigliate fresche.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Praga e Scamorza')">
-                            <div class="food-header"><span class="food-name">Praga e Scamorza</span><span class="food-price">€ 10,50</span></div>
-                            <p class="food-details">Salsa di pomodoro, mozzarella, scamorza affumicata e pregiato prosciutto di Praga affumicato.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Praga e Scamorza')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Praga e Scamorza</span><span class="food-price-lux">€ 10,50</span></div>
+                            <p class="food-desc-lux">Salsa di pomodoro, mozzarella, scamorza affumicata e pregiato prosciutto di Praga affumicato.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Prosciutto Crudo')">
-                            <div class="food-header"><span class="food-name">Prosciutto Crudo</span><span class="food-price">€ 11,00</span></div>
-                            <p class="food-details">Salsa di pomodoro, mozzarella fior di latte e fette di squisito crudo di Parma.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Prosciutto Crudo')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Prosciutto Crudo</span><span class="food-price-lux">€ 11,00</span></div>
+                            <p class="food-desc-lux">Salsa di pomodoro, mozzarella fior di latte e fette di squisito crudo di Parma.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Speck e Scamorza')">
-                            <div class="food-header"><span class="food-name">Speck e Scamorza</span><span class="food-price">€ 11,50</span></div>
-                            <p class="food-details">Salsa di pomodoro, mozzarella fior di latte, speck aromatico e cuori di scamorza fusa.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Speck e Scamorza')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Speck e Scamorza</span><span class="food-price-lux">€ 11,50</span></div>
+                            <p class="food-desc-lux">Salsa di pomodoro, mozzarella fior di latte, speck aromatico e cuori di scamorza fusa.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Capricciosa')">
-                            <div class="food-header"><span class="food-name">Capricciosa</span><span class="food-price">€ 11,50</span></div>
-                            <p class="food-details">Pomodoro, mozzarella, funghi, carciofi, olive, origano, acciughe e capperi.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Capricciosa')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Capricciosa</span><span class="food-price-lux">€ 11,50</span></div>
+                            <p class="food-desc-lux">Pomodoro, mozzarella, funghi, carciofi, olive, origano, acciughe e capperi.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SOTTO-MENU: I PRIMI PIATTI (TERRA & MARE) -->
-                <div class="menu-pane" id="primi">
-                    <div class="menu-inner-heading">I Primi della Tradizione (Terra)</div>
+                <div class="menu-grid-display" id="primi">
+                    <div class="menu-inner-separator">I Primi della Tradizione (Terra)</div>
                     
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Risotto Radicchio e Scamorza')">
-                            <div class="food-header"><span class="food-name">Risotto Radicchio e Scamorza</span><span class="food-price">€ 10,00</span></div>
-                            <p class="food-details">Risotto mantecato con radicchio amaro e scamorza filante.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Risotto Radicchio e Scamorza')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Risotto Radicchio e Scamorza</span><span class="food-price-lux">€ 10,00</span></div>
+                            <p class="food-desc-lux">Risotto mantecato con radicchio amaro e scamorza filante.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Spaghetti Pomodorini e Basilico')">
-                            <div class="food-header"><span class="food-name">Spaghetti Pomodorini e Basilico</span><span class="food-price">€ 10,00</span></div>
-                            <p class="food-details">Spaghetti trafilati al bronzo con pomodorini freschi estivi e basilico profumato.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Spaghetti Pomodorini e Basilico')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Spaghetti Pomodorini e Basilico</span><span class="food-price-lux">€ 10,00</span></div>
+                            <p class="food-desc-lux">Spaghetti trafilati al bronzo con pomodorini freschi estivi e basilico profumato.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Risotto ai Funghi Porcini')">
-                            <div class="food-header"><span class="food-name">Risotto ai Funghi Porcini</span><span class="food-price">€ 10,00</span></div>
-                            <p class="food-details">Riso Carnaroli cotto a fuoco lento con funghi porcini nostrani selezionati.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Risotto ai Funghi Porcini')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Risotto ai Funghi Porcini</span><span class="food-price-lux">€ 10,00</span></div>
+                            <p class="food-desc-lux">Riso Carnaroli cotto a fuoco lento con funghi porcini nostrani selezionati.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Risotto alla Milanese')">
-                            <div class="food-header"><span class="food-name">Risotto alla Milanese</span><span class="food-price">€ 10,00</span></div>
-                            <p class="food-details">Il grande classico lombardo con zafferano pregiato in fili e mantecatura magistrale.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Risotto alla Milanese')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Risotto alla Milanese</span><span class="food-price-lux">€ 10,00</span></div>
+                            <p class="food-desc-lux">Il grande classico lombardo con zafferano pregiato in fili e mantecatura magistrale.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Gnocchi con Zola e Noci')">
-                            <div class="food-header"><span class="food-name">Gnocchi con Zola e Noci</span><span class="food-price">€ 12,00</span></div>
-                            <p class="food-details">Gnocchi di patate freschi tuffati in crema densa di gorgonzola DOP e noci croccanti.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Gnocchi con Zola e Noci')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Gnocchi con Zola e Noci</span><span class="food-price-lux">€ 12,00</span></div>
+                            <p class="food-desc-lux">Gnocchi di patate freschi tuffati in crema densa di gorgonzola DOP e noci croccanti.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Spaghetti alla Carbonara')">
-                            <div class="food-header"><span class="food-name">Spaghetti alla Carbonara</span><span class="food-price">€ 12,00</span></div>
-                            <p class="food-details">Preparata a regola d'arte con guanciale romano croccante, pecorino e uovo cremoso.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Spaghetti alla Carbonara')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Spaghetti alla Carbonara</span><span class="food-price-lux">€ 12,00</span></div>
+                            <p class="food-desc-lux">Preparata a regola d'arte con guanciale romano croccante, pecorino e uovo cremoso.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Garganelli Speck Zafferano Porcini')">
-                            <div class="food-header"><span class="food-name">Garganelli Speck, Zafferano e Porcini</span><span class="food-price">€ 12,00</span></div>
-                            <p class="food-details">Unione decisa e ricca di sapori tra speck tirolese, funghi porcini e vellutata di zafferano.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Garganelli Speck Zafferano Porcini')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Garganelli Speck, Zafferano e Porcini</span><span class="food-price-lux">€ 12,00</span></div>
+                            <p class="food-desc-lux">Unione decisa e ricca di sapori tra speck tirolese, funghi porcini e vellutata di zafferano.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Tagliatelle ai Funghi Porcini')">
-                            <div class="food-header"><span class="food-name">Tagliatelle ai Funghi Porcini</span><span class="food-price">€ 12,00</span></div>
-                            <p class="food-details">Pasta all'uovo stesa sottile saltata in padella con porcini trifolati e prezzemolo.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Tagliatelle ai Funghi Porcini')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Tagliatelle ai Funghi Porcini</span><span class="food-price-lux">€ 12,00</span></div>
+                            <p class="food-desc-lux">Pasta all'uovo stesa sottile saltata in padella con porcini trifolati e prezzemolo.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Gnocchi alla Sorrentina')">
-                            <div class="food-header"><span class="food-name">Gnocchi alla Sorrentina</span><span class="food-price">€ 12,00</span></div>
-                            <p class="food-details">Gnocchi di patate cotti al forno con sugo rustico di pomodoro e mozzarella filante.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Gnocchi alla Sorrentina')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Gnocchi alla Sorrentina</span><span class="food-price-lux">€ 12,00</span></div>
+                            <p class="food-desc-lux">Gnocchi di patate cotti al forno con sugo rustico di pomodoro e mozzarella filante.</p>
                         </div>
                     </div>
 
-                    <div class="menu-inner-heading">Le Specialità dal Mare</div>
+                    <div class="menu-inner-separator">Le Specialità dal Mare</div>
 
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Spaghetti alle Vongole Veraci')">
-                            <div class="food-header"><span class="food-name">Spaghetti alle Vongole Veraci</span><span class="food-price">€ 14,00</span></div>
-                            <p class="food-details">Spaghetti saltati con abbondanti vongole veraci fresche, sfumate al vino bianco.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Spaghetti alle Vongole Veraci')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Spaghetti alle Vongole Veraci</span><span class="food-price-lux">€ 14,00</span></div>
+                            <p class="food-desc-lux">Spaghetti saltati con abbondanti vongole veraci fresche, sfumate al vino bianco.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Risotto ai Frutti di Mare')">
-                            <div class="food-header"><span class="food-name">Risotto ai Frutti di Mare</span><span class="food-price">€ 14,00</span></div>
-                            <p class="food-details">Cottura lenta all'onda per un riso ricco di maree: cozze, vongole, calamari e gamberi.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Risotto ai Frutti di Mare')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Risotto ai Frutti di Mare</span><span class="food-price-lux">€ 14,00</span></div>
+                            <p class="food-desc-lux">Cottura lenta all'onda per un riso ricco di maree: cozze, vongole, calamari e gamberi.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Tagliolini Vongole Bottarga Calamaretti')">
-                            <div class="food-header"><span class="food-name">Tagliolini Vongole, Bottarga e Calamaretti</span><span class="food-price">€ 14,00</span></div>
-                            <p class="food-details">Pasta fresca ad alto contenuto di gusto marinaro con una spolverata finale di pregiata bottarga.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Tagliolini Vongole Bottarga Calamaretti')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Tagliolini Vongole, Bottarga e Calamaretti</span><span class="food-price-lux">€ 14,00</span></div>
+                            <p class="food-desc-lux">Pasta fresca ad alto contenuto di gusto marinaro con una spolverata finale di pregiata bottarga.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Risotto Scampi Zucchine Zafferano')">
-                            <div class="food-header"><span class="food-name">Risotto Scampi, Zucchine e Zafferano</span><span class="food-price">€ 15,00</span></div>
-                            <p class="food-details">Un connubio delicato e raffinato tra la dolcezza degli scampi e il profumo dello zafferano.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Risotto Scampi Zucchine Zafferano')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Risotto Scampi, Zucchine e Zafferano</span><span class="food-price-lux">€ 15,00</span></div>
+                            <p class="food-desc-lux">Un connubio delicato e raffinato tra la dolcezza degli scampi e il profumo dello zafferano.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Tagliolini Nero di Seppia')">
-                            <div class="food-header"><span class="food-name">Tagliolini al Nero di Seppia con Scampi e Asparagi</span><span class="food-price">€ 16,00</span></div>
-                            <p class="food-details">Pasta artigianale nera saltata con code di scampi fresche e punte di asparagi croccanti.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Tagliolini Nero di Seppia')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Tagliolini al Nero di Seppia con Scampi e Asparagi</span><span class="food-price-lux">€ 16,00</span></div>
+                            <p class="food-desc-lux">Pasta artigianale nera saltata con code di scampi fresche e punte di asparagi croccanti.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SOTTO-MENU: LE BEVANDE -->
-                <div class="menu-pane" id="bevande">
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Coca-Cola Lattina')">
-                            <div class="food-header"><span class="food-name">Coca-Cola Lattina 33cl</span><span class="food-price">€ 2,50</span></div>
-                            <p class="food-details">La bevanda rinfrescante per eccellenza, servita ghiacciata.</p>
+                <div class="menu-grid-display" id="bevande">
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Coca-Cola Lattina')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Coca-Cola Lattina 33cl</span><span class="food-price-lux">€ 2,50</span></div>
+                            <p class="food-desc-lux">La bevanda rinfrescante per eccellenza, servita ghiacciata.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Coca-Cola Zero Lattina')">
-                            <div class="food-header"><span class="food-name">Coca-Cola Zero Lattina 33cl</span><span class="food-price">€ 2,50</span></div>
-                            <p class="food-details">Tutto il gusto classico e zero zuccheri in lattina.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Coca-Cola Zero Lattina')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Coca-Cola Zero Lattina 33cl</span><span class="food-price-lux">€ 2,50</span></div>
+                            <p class="food-desc-lux">Tutto il gusto classico e zero zuccheri in lattina.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Fanta Lattina')">
-                            <div class="food-header"><span class="food-name">Fanta Lattina 33cl</span><span class="food-price">€ 2,50</span></div>
-                            <p class="food-details">Aranciata frizzante dal gusto intenso con succo d'arancia.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Fanta Lattina')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Fanta Lattina 33cl</span><span class="food-price-lux">€ 2,50</span></div>
+                            <p class="food-desc-lux">Aranciata frizzante dal gusto intenso con succo d'arancia.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Sprite Lattina')">
-                            <div class="food-header"><span class="food-name">Sprite Lattina 33cl</span><span class="food-price">€ 2,50</span></div>
-                            <p class="food-details">Gusto rinfrescante al limone e lime, trasparente e frizzante.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Sprite Lattina')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Sprite Lattina 33cl</span><span class="food-price-lux">€ 2,50</span></div>
+                            <p class="food-desc-lux">Gusto rinfrescante al limone e lime, trasparente e frizzante.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Té Limone Lattina')">
-                            <div class="food-header"><span class="food-name">Té al Limone Lattina 33cl</span><span class="food-price">€ 2,50</span></div>
-                            <p class="food-details">Té freddo dissetante aromatizzato al succo naturale di limone.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Té Limone Lattina')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Té al Limone Lattina 33cl</span><span class="food-price-lux">€ 2,50</span></div>
+                            <p class="food-desc-lux">Té freddo dissetante aromatizzato al succo naturale di limone.</p>
                         </div>
                     </div>
-                    <div class="card-perspective-wrapper">
-                        <div class="food-card js-tilt-card" onclick="simulateOrder('Té Pesca Lattina')">
-                            <div class="food-header"><span class="food-name">Té alla Pesca Lattina 33cl</span><span class="food-price">€ 2,50</span></div>
-                            <p class="food-details">Té freddo estivo dolce e fruttato al gusto di pesca.</p>
+                    <div class="card-3d-tilt" onclick="triggerOrderLogistics('Té Pesca Lattina')">
+                        <div class="card-content-holder">
+                            <div class="food-flex-row"><span class="food-title-lux">Té alla Pesca Lattina 33cl</span><span class="food-price-lux">€ 2,50</span></div>
+                            <p class="food-desc-lux">Té freddo estivo dolce e fruttato al gusto di pesca.</p>
                         </div>
                     </div>
                 </div>
@@ -732,141 +800,262 @@
         </div>
     </section>
 
-    <!-- ORDINA ONLINE -->
-    <section class="section-space" id="ordina">
-        <div class="bg-text-stroke">DELIVERY</div>
-        <div class="container reveal-element">
-            <h2 class="section-title">Gustalo <span>a Casa Tua</span></h2>
-            <p class="section-subtitle">Ordina online in pochi passaggi tramite le nostre piattaforme di consegna partner.</p>
+    <section class="section-padding" id="ordina">
+        <div class="container reveal-node">
+            <div class="section-header-center">
+                <h2 class="section-title-premium">Gustalo <span>a Casa Tua</span></h2>
+                <p class="section-subtitle-premium">Ordina online in pochi passaggi tramite le nostre piattaforme di consegna partner.</p>
+            </div>
             
-            <div class="delivery-grid">
-                <div class="card-perspective-wrapper">
-                    <div class="delivery-card js-tilt-card">
-                        <div class="platform-name deliveroo-theme">Deliveroo</div>
-                        <div class="delivery-badge">Consegna Rapida</div>
-                        <div class="delivery-time">Pronto a casa tua in <strong>15-20 min</strong></div>
-                        <a href="https://deliveroo.it/it/menu/milano/vigentino-corvetto-calvairate/ristorante-pizzeria-san-giovanni-2-corso-lodi" target="_blank" class="delivery-btn">Ordina con Deliveroo</a>
-                    </div>
+            <div class="delivery-premium-layout">
+                <div class="delivery-glass-box">
+                    <div class="brand-del-title color-deliveroo">Deliveroo</div>
+                    <div class="badge-pill-gold">Consegna Rapida</div>
+                    <div class="time-info-text">Pronto a casa tua in <strong>15-20 min</strong></div>
+                    <a href="https://deliveroo.it/it/menu/milano/vigentino-corvetto-calvairate/ristorante-pizzeria-san-giovanni-2-corso-lodi" target="_blank" class="btn-del-action">Ordina con Deliveroo</a>
                 </div>
-                <div class="card-perspective-wrapper">
-                    <div class="delivery-card js-tilt-card">
-                        <div class="platform-name justeat-theme">Just Eat</div>
-                        <div class="delivery-badge">Servizio Affidabile</div>
-                        <div class="delivery-time">Pronto a casa tua in <strong>20-30 min</strong></div>
-                        <a href="https://www.justeat.it/restaurants-ristorante-pizzeria-san-giovanni-2-milano/menu" target="_blank" class="delivery-btn">Ordina con Just Eat</a>
-                    </div>
+                <div class="delivery-glass-box">
+                    <div class="brand-del-title color-justeat">Just Eat</div>
+                    <div class="badge-pill-gold">Servizio Affidabile</div>
+                    <div class="time-info-text">Pronto a casa tua in <strong>20-30 min</strong></div>
+                    <a href="https://www.justeat.it/restaurants-ristorante-pizzeria-san-giovanni-2-milano/menu" target="_blank" class="btn-del-action">Ordina con Just Eat</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- RECENSIONI -->
-    <section class="section-space" id="recensioni">
-        <div class="container reveal-element">
-            <h2 class="section-title">Esperienze dei <span>Clienti</span></h2>
-            <p class="section-subtitle">Cosa dice chi ha già provato la nostra cucina autentica.</p>
+    <section class="section-padding" id="recensioni">
+        <div class="container reveal-node">
+            <div class="section-header-center">
+                <h2 class="section-title-premium">Esperienze dei <span>Clienti</span></h2>
+                <p class="section-subtitle-premium">Cosa dice chi ha già provato la nostra cucina autentica.</p>
+            </div>
             
-            <div class="reviews-layout">
-                <div class="card-perspective-wrapper"><div class="review-card js-tilt-card"><div class="stars-container">★★★★★</div><p class="review-quote">"Ottimo cibo e servizio. Sempre cordiali e simpatici. Pesce fresco e ottimi tagli di carne."</p><div class="review-author"><span>Vittorio Bersani</span><span class="author-source">Google</span></div></div></div>
-                <div class="card-perspective-wrapper"><div class="review-card js-tilt-card"><div class="stars-container">★★★★★</div><p class="review-quote">"In questo locale ci sono stato varie volte ed il personale è stato molto accogliente. Ottima la carne e il pesce."</p><div class="review-author"><span>Stefano Gerges</span><span class="author-source">Google</span></div></div></div>
-                <div class="card-perspective-wrapper"><div class="review-card js-tilt-card"><div class="stars-container">★★★★★</div><p class="review-quote">"Scoperto per caso anni fa ed è diventato ristorante fisso di fiducia. Tutto molto buono. Ottimo rapporto qualità prezzo."</p><div class="review-author"><span>Giovanna Albertini</span><span class="author-source">Google</span></div></div></div>
-            </div>
+            <div class="reviews-luxury-flex">
+                <div class="review-luxury-card"><div class="stars-lux-row">★★★★★</div><p class="quote-lux-text">"Ottimo cibo e servizio. Sempre cordiali e simpatici. Pesce fresco e ottimi tagli di carne."</p><div class="author-lux-footer"><span>Vittorio Bersani</span><span class="source-badge-lux">Google</span></div></div>
+                <div class="review-luxury-card"><div class="stars-lux-row">★★★★★</div><p class="quote-lux-text">"In questo locale ci sono stato varie volte ed il personale è stato molto accogliente. Ottima la carne e il pesce."</p><div class="author-lux-footer"><span>Stefano Gerges</span><span class="source-badge-lux">Google</span></div></div>
+                <div class="review-luxury-card"><div class="stars-lux-row">★★★★★</div><p class="quote-lux-text">"Scoperto per caso anni fa ed è diventato ristorante fisso di fiducia. Tutto molto buono. Ottimo rapporto qualità prezzo."</p><div class="author-lux-footer"><span>Giovanna Albertini</span><span class="source-badge-lux">Google</span></div></div>
+                <div class="review-luxury-card"><div class="stars-lux-row">★★★★★</div><p class="quote-lux-text">"Ho avuto il piacere di cenare al Baraka Brenta e devo dire che l’esperienza è stata davvero positiva. "</p><div class="author-lux-footer"><span>Nada Wahba</span><span class="source-badge-lux">Google</span></div></div>
+                <div class="review-luxury-card"><div class="stars-lux-row">★★★★★</div><p class="quote-lux-text">"Sembra di stare in Egitto. Ristorante molto simile ai ristoranti del Cairo, specializzato nelle carne alla brace con carbone."</p><div class="author-lux-footer"><span>Amy M</span><span class="source-badge-lux">Google</span></div></div>
+                <div class="review-luxury-card"><div class="stars-lux-row">★★★★★</div><p class="quote-lux-text">"Piacevole scoperta in zona Brenta. Stavamo passeggiato e il locale ci ha colpito.
+Una volta entrati siamo tornati con la mente in un paese arabo. "</p><div class="author-lux-footer"><span>Marco Tatullo</span><span class="source-badge-lux">Google</span></div></div>
+         </div>
         </div>
     </section>
 
-    <!-- CONTATTI -->
-    <section class="section-space" id="contatti">
-        <div class="container reveal-element">
-            <div class="contacts-text-block">
-                <span class="highlight-gold">Ristorante Pizzeria San Giovanni 2</span>
+    <section class="section-padding" id="contatti">
+        <div class="container reveal-node">
+            <div class="contacts-capsule-island">
+                <span class="brand-gold-highlight">Ristorante Pizzeria San Giovanni 2</span>
                 <h2>Vieni a Trovarci</h2>
                 <p><strong>Indirizzo:</strong> Corso Lodi, 71, 20139 Milano (MI)</p>
                 <p><strong>Telefono:</strong> 02 539 8097</p>
-                <p class="contacts-description">Un ambiente accogliente ed elegante dove la qualità delle materie prime incontra la vera ospitalità italiana. Ti aspettiamo a Milano per assaporare la nostra cucina tradizionale.</p>
+                <p class="desc-contacts-muted">Un ambiente accogliente ed elegante dove la qualità delle materie prime incontra la vera ospitalità italiana. Ti aspettiamo a Milano per assaporare la nostra cucina tradizionale.</p>
                 
-                <div style="margin-top: 50px;">
-                    <a href="https://acesse.one/l4nu4od" target="_blank" class="cta-button">Prenota un Tavolo</a>
+                <div style="margin-top: 45px;">
+                    <a href="https://acesse.one/l4nu4od" target="_blank" class="btn-luxury">Prenota un Tavolo</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
         <div class="container">
             <p>&copy; 2026 Ristorante Pizzeria San Giovanni 2 | Milano | Tutti i diritti riservati.</p>
         </div>
     </footer>
 
-    <!-- CONTENITORE NOTIFICHE FLUTTUANTI -->
-    <div id="toast-container"></div>
+    <div id="toast-box-container"></div>
 
-    <!-- LOGICA DI AZIONAMENTO JS -->
     <script>
-        // 1. Mouse-Tilt Prospettico 3D calibrato
-        const tiltCards = document.querySelectorAll('.js-tilt-card');
-        tiltCards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = ((centerY - y) / centerY) * 10;
-                const rotateY = ((x - centerX) / centerX) * 10;
-                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.01)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-            });
-        });
+        // ==========================================================================
+        // MOTORE 3D AVANZATO: FLUID VORTEX CHINETICO
+        // ==========================================================================
+        const canvas = document.getElementById('canvas-3d-vortex');
+        const ctx = canvas.getContext('2d');
 
-        // 2. Navigazione Hamburger Mobile
-        const mobileMenu = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('nav-links');
-        mobileMenu.addEventListener('click', () => {
-            mobileMenu.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
 
-        // 3. Selezione Categorie del Menu Gastronomico
-        function switchCategory(event, categoryId) {
-            document.querySelectorAll('.menu-pane').forEach(pane => pane.classList.remove('pane-active'));
-            document.querySelectorAll('.menu-tab-btn').forEach(btn => btn.classList.remove('tab-active'));
-            document.getElementById(categoryId).classList.add('pane-active');
-            event.currentTarget.classList.add('tab-active');
+        const particleCount = 90;
+        const pts = [];
+        
+        // Tracciamento avanzato del mouse con vettori di velocità ed inerzia
+        let mouse = { x: w / 2, y: h / 2, vx: 0, vy: 0, prevX: w / 2, prevY: h / 2 };
+
+        for (let i = 0; i < particleCount; i++) {
+            pts.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                z: Math.random() * 800 + 100, // Profondità prospettica
+                baseRadius: Math.random() * 1.5 + 0.8,
+                speedX: (Math.random() - 0.5) * 0.4,
+                speedY: (Math.random() - 0.5) * 0.4,
+                opacity: Math.random() * 0.5 + 0.2
+            });
         }
 
-        // 4. Scroll Reveal (Attivazione Sezioni)
-        const revealItems = document.querySelectorAll('.reveal-element');
-        const revealObserver = new IntersectionObserver((entries, observer) => {
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            
+            // Calcolo forza vettoriale del movimento del mouse
+            mouse.vx = mouse.x - mouse.prevX;
+            mouse.vy = mouse.y - mouse.prevY;
+            
+            mouse.prevX = mouse.x;
+            mouse.prevY = mouse.y;
+        });
+
+        window.addEventListener('resize', () => {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        });
+
+        function systemLoop() {
+            ctx.clearRect(0, 0, w, h);
+
+            // Dissipazione dell'energia cinetica del mouse ad ogni frame
+            mouse.vx *= 0.95;
+            mouse.vy *= 0.95;
+
+            pts.forEach(p => {
+                // Movimento autonomo
+                p.x += p.speedX;
+                p.y += p.speedY;
+                p.z -= 0.4; // Avanzamento costante in profondità
+
+                if (p.z <= 10) p.z = 900;
+
+                // Interazione cinetica: il vento del mouse influenza le particelle in base alla vicinanza
+                let dx = mouse.x - p.x;
+                let dy = mouse.y - p.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < 250) {
+                    let force = (250 - dist) / 250;
+                    p.x += mouse.vx * force * 0.2;
+                    p.y += mouse.vy * force * 0.2;
+                }
+
+                // Limiti geometrici dello schermo
+                if (p.x < 0) p.x = w;
+                if (p.x > w) p.x = 0;
+                if (p.y < 0) p.y = h;
+                if (p.y > h) p.y = 0;
+
+                // Calcolo delle proiezioni matematiche 3D
+                let focal = 400;
+                let scale = focal / (focal + p.z);
+                let projX = (p.x - w / 2) * scale + w / 2;
+                let projY = (p.y - h / 2) * scale + h / 2;
+                let finalSize = p.baseRadius * scale * 2;
+
+                if (projX >= 0 && projX <= w && projY >= 0 && projY <= h) {
+                    ctx.beginPath();
+                    ctx.arc(projX, projY, finalSize, 0, Math.PI * 2);
+                    // Colore oro dinamico che sfuma verso il fondo dello schermo Z
+                    ctx.fillStyle = `rgba(212, 175, 55, ${p.opacity * (1 - p.z / 900)})`;
+                    ctx.fill();
+                }
+            });
+
+            requestAnimationFrame(systemLoop);
+        }
+        systemLoop();
+
+        // ==========================================================================
+        // SISTEMA INTERATTIVO: INTERFACCIA, TRACCIAMENTO LUCE & 3D TILT
+        // ==========================================================================
+        
+        // 1. Controllo Navbar Mutante (Island Capsule)
+        const header = document.getElementById('dynamic-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // 2. Menu di Navigazione Mobile Hamburger
+        const trigger = document.getElementById('hamburger-trigger');
+        const nodes = document.getElementById('navigation-nodes');
+        trigger.addEventListener('click', () => {
+            trigger.classList.toggle('active');
+            nodes.classList.toggle('active');
+        });
+
+        // 3. Gestione Cambio Tab del Menu Gastronomico
+        function changeMenuCategory(e, id) {
+            document.querySelectorAll('.menu-grid-display').forEach(p => p.classList.remove('pane-active'));
+            document.querySelectorAll('.tab-btn-premium').forEach(b => b.classList.remove('tab-active'));
+            document.getElementById(id).classList.add('pane-active');
+            e.currentTarget.classList.add('tab-active');
+            initCardInteractions(); // Inizializza i calcoli sulle nuove card stampate a schermo
+        }
+
+        // 4. Motore Micro-Interattivo: Perspective Tilt + Spotlight Sheen
+        function initCardInteractions() {
+            const cards = document.querySelectorAll('.card-3d-tilt');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // Configura le coordinate della luce interna nel CSS
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+
+                    // Calcolo angoli tridimensionali basati sulla posizione del cursore
+                    const cardW = rect.width;
+                    const cardH = rect.height;
+                    const rotX = ((y - cardH / 2) / (cardH / 2)) * -10; // Max 10 gradi inclinazione asse X
+                    const rotY = ((x - cardW / 2) / (cardW / 2)) * 10;  // Max 10 gradi inclinazione asse Y
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-5px)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    // Ripristino morbido della card alla posizione originale
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
+                });
+            });
+        }
+        initCardInteractions(); // Esecuzione immediata al caricamento della pagina
+
+        // 5. Scroll Reveal Engine (Apparizioni fluide)
+        const nodesToReveal = document.querySelectorAll('.reveal-node');
+        const observerOptions = { threshold: 0.05 };
+        const nodeObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
                     entry.target.classList.add('revealed');
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.05 });
-        revealItems.forEach(item => revealObserver.observe(item));
+        }, observerOptions);
+        nodesToReveal.forEach(n => nodeObserver.observe(n));
 
-        // 5. Gestione Sistema di Notifica Fly-out (Toast)
-        function showToast(message) {
-            const container = document.getElementById('toast-container');
+        // 6. Fly-out Premium Toast Notification
+        function sendToastNotification(text) {
+            const container = document.getElementById('toast-box-container');
             const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerHTML = `<span class="toast-icon">✓</span> <span>${message}</span>`;
+            toast.className = 'premium-toast';
+            toast.innerHTML = `<span class="toast-gold-dot">✦</span> <span>${text}</span>`;
             container.appendChild(toast);
             
-            setTimeout(() => toast.classList.add('toast-show'), 50);
+            setTimeout(() => toast.classList.add('toast-active'), 40);
             
             setTimeout(() => {
-                toast.classList.remove('toast-show');
-                setTimeout(() => toast.remove(), 400);
-            }, 4000);
+                toast.classList.remove('toast-active');
+                setTimeout(() => toast.remove(), 500);
+            }, 5000);
         }
 
-        function simulateOrder(itemName) {
-            showToast(`Hai selezionato: ${itemName}. Reindirizzamento alle opzioni di ordine online partner...`);
+        function triggerOrderLogistics(name) {
+            sendToastNotification(`Hai selezionato: ${name}. Ti stiamo connettendo ai nostri canali digitali partner per l'acquisto...`);
         }
     </script>
 </body>
